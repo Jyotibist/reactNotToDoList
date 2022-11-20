@@ -1,7 +1,6 @@
 import React from "react";
 
-export const BadList = ({ badList, handleOnDelete, taskSwitcher,handleOnCheck }) => {
-  const ttlHr = badList.reduce((acc, item)=>acc+item.hr,0);
+export const BadList = ({ badList }) => {
   return (
     <div className="col-md">
       <h2 className="text-center">Bad List</h2>
@@ -10,21 +9,18 @@ export const BadList = ({ badList, handleOnDelete, taskSwitcher,handleOnCheck })
         <tbody id="bad-task">
           {badList.map((item, i) => (
             <tr key={i}>
-              <input type="checkbox" className = "form-check-input"
-                value={item._id}
-                onChange={handleOnCheck}/>
               <td>{i + 1}</td>
               <td>{item.task}</td>
               <td>{item.hr}</td>
               <td class="text-end">
                 <button
-                  onClick={() => taskSwitcher(item._id, "entry")}
+                  //   onClick={() => taskSwitcher(i, "bad")}
                   class="btn btn-warning"
                 >
                   <i class="fa-solid fa-left-long"></i>
-                </button>{""}
+                </button>
                 <button
-                   onClick={() => handleOnDelete(item._id)}
+                  //   onClick={() => handleOnDelete(i)}
                   class="btn btn-danger"
                 >
                   <i class="fa-solid fa-trash"></i>
@@ -35,7 +31,7 @@ export const BadList = ({ badList, handleOnDelete, taskSwitcher,handleOnCheck })
         </tbody>
       </table>
       <div className="text-end fw-bold">
-        You could have saved = {ttlHr} Hrs
+        You could have saved = <span id="totalBadHr">0</span> Hrs
       </div>
     </div>
   );

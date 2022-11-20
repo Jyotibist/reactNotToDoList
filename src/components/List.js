@@ -2,7 +2,7 @@ import React from "react";
 import { BadList } from "./BadList";
 import { TaskList } from "./TaskList";
 
-export const List = ({ tasks, handleOnDelete, taskSwitcher, handleOnCheck}) => {
+export const List = ({ tasks, handleOnDelete, taskSwitcher }) => {
   const entryList = tasks.filter((item) => item.type === "entry");
   const badList = tasks.filter((item) => item.type === "bad");
 
@@ -12,12 +12,8 @@ export const List = ({ tasks, handleOnDelete, taskSwitcher, handleOnCheck}) => {
         entryList={entryList}
         handleOnDelete={handleOnDelete}
         taskSwitcher={taskSwitcher}
-        handleOnCheck = {handleOnCheck}
       />
-      <BadList badList={badList}  
-      handleOnDelete={handleOnDelete} 
-      taskSwitcher={taskSwitcher}
-      handleOnCheck = {handleOnCheck} />
+      <BadList badList={badList} />
     </div>
   );
 };

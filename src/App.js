@@ -2,17 +2,14 @@ import { useState } from "react";
 import "./App.css";
 import { Form } from "./components/Form";
 import { List } from "./components/List";
-const ttlHrPerWeek = 24*7
+import { v4 as uuidv4 } from "uuid";
+
 function App() {
-  const [tasks, setTasks] = useState([]);
-  const [idsToDelete, setIdsToDelete]= useState([]);
-  const totalHrs = tasks.reduce((acc, item)=> acc+item.hr,0)
+  const [tasks, setTasks] = useState([]);//replace by server db
 
   const taskEntry = (taskObj) => {
-    if(totalHrs + taskObj.hr>ttlHrPerWeek){
-      return alert("Too many hrs you cannot add more")
-
-    }
+    taskObj._id = uuidv4();
+    console.log(taskObj);
     setTasks([...tasks, taskObj]);
   };
 
@@ -25,23 +22,8 @@ function App() {
 
     setTasks(filteredArg);
   };
-  const handleOnManyDelete = () => {
-    if (!window.confirm("Are you sure you want to delete?")) {
-      return;
-    }
-    console.log(idsToDelete);
-    const filteredArg = tasks.filter((item)=>!idsToDelete.includes(item._id));
-    setTasks(filteredArg);
-    idsToDelete([]);
-
-    // const filteredArg = tasks.filter((item) => item._id !== _id);
-
-    // setTasks(filteredArg);
-  };
 
   const taskSwitcher = (_id, type) => {
-    console.log(tasks);
-
     const updatedArg = tasks.map((item) => {
       if (_id === item._id) {
         item.type = type;
@@ -49,24 +31,11 @@ function App() {
 
       return item;
     });
-    console.log(updatedArg);
+
     setTasks(updatedArg);
   };
 
-  // console.log(tasks);
-  const handleOnCheck=(e)=>{
-    const {checked, value} = e.target;
-    // console.log(e.target.checked);
-    if(checked){
-      setIdsToDelete([
-        ...idsToDelete, value
-      ]);
-    }else{
-      const tempArg = idsToDelete.filter((item)=> item!== value);
-      setIdsToDelete(tempArg);
-    }
-  };
-  console.log(idsToDelete);
+  console.log(tasks);
   return (
     <div className="wrapper">
       <div className="container">
@@ -83,22 +52,12 @@ function App() {
           tasks={tasks}
           handleOnDelete={handleOnDelete}
           taskSwitcher={taskSwitcher}
-          handleOnCheck = {handleOnCheck}
-          // handleOnManyDelete = {handleOnManyDelete}
         />
-        {idsToDelete.length > 0 && (
-        <div className="d-grid py-4">
-          <button className="btn btn-lg btn-danger"
-          onClick={handleOnManyDelete}>
-            Delete selected task
-          </button>
 
-        </div>)} 
-        
         {/* <!-- total hr area --> */}
         <div className="row fw-bold">
           <div className="col">
-            The total hours allocated = {totalHrs} Hrs
+            The total hours allocated = <span id="totalHrs">0</span> Hrs
           </div>
         </div>
       </div>
